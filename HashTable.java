@@ -51,11 +51,11 @@ public class HashTable {
 				index = calcSecondaryHash(h.getKey(), count);
 			
 			count++;
-			curElements++;
 		}
 		
 		h.setProbeCount(h.getProbeCount()+tmpProbeCount);
 		sumProbeNum += tmpProbeCount;
+		curElements++;
 		table[index]=h;
 	}
 	
