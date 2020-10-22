@@ -1,5 +1,8 @@
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.Reader;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -78,18 +81,16 @@ public class HashTest {
 		case WORD_LIST:
 			// word list
 			// TODO fix number of elements and duplicates? something wrong here
-			File tmpFile = new File("word-list");
 			try {
-				Scanner fileScanner = new Scanner(tmpFile);
-				while (!htLinear.isFull()) {
-					if (fileScanner.hasNext()) {
-						HashObject<String> tmp = new HashObject<String>(fileScanner.next());
-						htLinear.insert(tmp);
-						htDouble.insert(tmp);
-					}
+				BufferedReader br = new BufferedReader(new FileReader("word-list"));
+				String word="";
+				while (((word=br.readLine())!=null && htLinear.isFull())) {
+					HashObject<String> tmp = new HashObject<String>(word);
+					htLinear.insert(tmp);
+					htDouble.insert(tmp);
 				}
-				fileScanner.close();
-			} catch (FileNotFoundException e) {
+				br.close();
+			} catch (Exception e) {
 				System.out.println("cannot access file 'word-list'");
 				return;
 			}
