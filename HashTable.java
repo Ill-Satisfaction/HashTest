@@ -7,6 +7,7 @@ public class HashTable {
 	private int numItems;	// n = number of items to be inserted
 	private probeMethod pm;
 	
+	private double numElements;
 	private int duplicates;
 	private double sumProbeNum;
 	
@@ -15,6 +16,7 @@ public class HashTable {
 		this.pm = pm;
 		duplicates=0;
 		sumProbeNum=-1.0;
+		numElements=0;
 	}
 	
 	public void printDebug (int numItems, double loadFactor) {
@@ -26,16 +28,20 @@ public class HashTable {
 	public int size () {return table.length;}
 	
 	public void insert (int key, HashObject<?> h) {
+		// TODO check number of items
 		int index =hashValue(key);
 		int count =0;
+		
 		while (table[index]!=null) {
 			count++;
 			h.iterateProbeCount();
+			
 			if (h.equals(table[index])) {
 				duplicates++;
 				table[index].iterateDupCount();
 				return;
 			}
+			
 			if (pm==probeMethod.LINEAR) {
 				if (index==table.length-1) index=0;
 				else index++;
@@ -48,20 +54,37 @@ public class HashTable {
 		h.iterateProbeCount();
 		sumProbeNum++;
 		table[index]=h;
+		numElements++;
+		//System.out.println(numElements/table.length);
 	}
 	
 	private int hashValue (int key) {
 		int retval = key%table.length;
-		retval += (retval<0) ? table.length : 0;
-		return retval;
+		return Math.abs( retval );
 	}
 	
+	
+	// math.absolute(keyvalu%tablesize
+	// math.abs( 1 + (keyvalue%(tablesize-2))
+	
 	private int secondaryHashValue (int key, int iteration) {
-		int retval = 1+(key%(table.length-2));
-		retval += (retval<0) ? table.length : 0;
+		/*int retval = 1+(key%(table.length-2));
+		retval = Math.abs(retval);
 		
-		retval = (hashValue(key) + iteration*retval)%table.length;
-		return retval;
+		retval = (hashValue(key) + iteration*retval)%table.length;*/
+		int retval = 1 +(key % (table.length-2));
+		return Math.abs( retval );
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }
