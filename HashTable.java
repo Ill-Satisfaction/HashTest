@@ -11,16 +11,18 @@ public class HashTable {
 	private probeMethod pm;
 	private boolean dump;
 	private double loadFactor;
+	private int numItems;
 	
 	private int numElements;
 	private long duplicates;
 	private long sumProbeNum;
 	
-	public HashTable (int tableSize, probeMethod pm, boolean dump, double loadFactor) {
+	public HashTable (int tableSize, probeMethod pm, boolean dump, double loadFactor, int numItems) {
 		table = new HashObject[tableSize];
 		this.pm = pm;
 		this.dump = dump;
 		this.loadFactor = loadFactor;
+		this.numItems = numItems;
 		duplicates=0;
 		sumProbeNum=0;
 		numElements=0;
@@ -65,8 +67,8 @@ public class HashTable {
 	}
 	
 	public boolean isFull () {
-		double currLoadFactor = numElements-duplicates;
-		return currLoadFactor/table.length >=loadFactor;
+		//double currLoadFactor = numElements-duplicates;
+		return numElements>=numItems;//currLoadFactor/table.length >=loadFactor;
 	}
 	
 	public int size () {return table.length;}

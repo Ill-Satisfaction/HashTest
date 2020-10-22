@@ -45,7 +45,6 @@ public class HashTest {
 		
 		
 		
-		// TODO
 		int numItems = (int) (twinPrimes[1] *loadFactor);
 		
 		
@@ -56,8 +55,8 @@ public class HashTest {
 		System.out.println("Data source type: "+in);
 		
 		// load tables
-		HashTable htLinear = new HashTable(twinPrimes[1], HashTable.probeMethod.LINEAR, generateDumpFiles, loadFactor);
-		HashTable htDouble = new HashTable(twinPrimes[1], HashTable.probeMethod.DOUBLE, generateDumpFiles, loadFactor);
+		HashTable htLinear = new HashTable(twinPrimes[1], HashTable.probeMethod.LINEAR, generateDumpFiles, loadFactor, numItems);
+		HashTable htDouble = new HashTable(twinPrimes[1], HashTable.probeMethod.DOUBLE, generateDumpFiles, loadFactor, numItems);
 		
 		switch (in) {
 		case RANDOM :
