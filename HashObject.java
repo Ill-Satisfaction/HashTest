@@ -29,6 +29,7 @@ public class HashObject<T> {
 	
 	public void iterateDupCount () {this.dupCount++;}
 	public void iterateProbeCount () {this.probeCount++;}
+	public void setProbeCount (int count) {this.probeCount=count;}
 	
 	public T getItem () {return item;}
 	public int getDupCount () {return this.dupCount;}

@@ -27,30 +27,35 @@ public class HashTable {
 	}
 	
 	public void insert (HashObject<?> h) {
-		// TODO check number of items
-		int index =hashValue( h.getKey());
-		numElements++;
-		
+		int index =hashValue( h.getKey()) ;//% table.length;
 		int count =0;
+		numElements++;
+		int tmpProbeCount =1;
+		
+		
 		while (table[index]!=null) {
+			
+			tmpProbeCount = count+1;
+			
 			if (h.equals(table[index])) {
 				duplicates++;
 				table[index].iterateDupCount();
 				return;
 			}
-			sumProbeNum++;
-			h.iterateProbeCount();
-			if (pm==probeMethod.LINEAR)
-				if (index!=table.length-1) index++;
-				else index=0;
-			else {
-				index = Math.abs( (hashValue(h.getKey()) + count*secondaryHashValue(h.getKey())) % table.length);
+			if (pm==probeMethod.LINEAR) {
+				index = calcPrimaryHash(h.getKey(), count);
+			}
+			else if (pm==probeMethod.DOUBLE) {
+				index = calcSecondaryHash(h.getKey(), count);
 			}
 			count++;
 		}
-		sumProbeNum++;
-		h.iterateProbeCount();
+		
+		h.setProbeCount(h.getProbeCount()+tmpProbeCount);
+		sumProbeNum += tmpProbeCount;
 		table[index]=h;
+		
+		
 	}
 	
 	public void printDebug () {
@@ -67,6 +72,14 @@ public class HashTable {
 	}
 	
 	public int size () {return table.length;}
+	
+	private int calcSecondaryHash (int keyHash, int count) {
+		return Math.abs((hashValue(keyHash)+(count*secondaryHashValue(keyHash))) % table.length);
+	}
+	
+	private int calcPrimaryHash (int keyHash, int count) {
+		return (hashValue(keyHash) + count)% table.length;
+	}
 	
 	private int hashValue (int keyHash) {
 		return Math.abs( keyHash % table.length );
