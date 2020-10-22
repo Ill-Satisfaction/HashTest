@@ -34,7 +34,6 @@ public class HashTable {
 		
 		while (table[index]!=null) {
 			tmpProbeCount = count+1;
-			count++;
 			
 			if (h.equals(table[index])) {
 				duplicates++;
@@ -46,6 +45,8 @@ public class HashTable {
 				index = calcPrimaryHash(h.getKey(), count);
 			else if (pm==probeMethod.DOUBLE)
 				index = calcSecondaryHash(h.getKey(), count);
+			
+			count++;
 		}
 		
 		h.setProbeCount(h.getProbeCount()+tmpProbeCount);
