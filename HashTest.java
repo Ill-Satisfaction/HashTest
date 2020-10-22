@@ -84,7 +84,7 @@ public class HashTest {
 			try {
 				BufferedReader br = new BufferedReader(new FileReader("word-list"));
 				String word="";
-				while (((word=br.readLine())!=null && htLinear.isFull())) {
+				while (((word=br.readLine())!=null && !htLinear.isFull())) {
 					HashObject<String> tmp = new HashObject<String>(word);
 					htLinear.insert(tmp);
 					htDouble.insert(tmp);
