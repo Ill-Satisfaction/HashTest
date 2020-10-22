@@ -14,6 +14,7 @@ public class HashTable {
 	private int numItems;
 	
 	private int numElements;
+	private int curElements;
 	private long duplicates;
 	private long sumProbeNum;
 	
@@ -29,10 +30,10 @@ public class HashTable {
 	}
 	
 	public void insert (HashObject<?> h) {
-		int index =hashValue( h.getKey()) ;//% table.length;
+		int index =hashValue( h.getKey()) ;
 		int count =0;
-		numElements++;
 		int tmpProbeCount =1;
+		numElements++;
 		
 		while (table[index]!=null) {
 			tmpProbeCount = count+1;
@@ -40,6 +41,7 @@ public class HashTable {
 			if (h.equals(table[index])) {
 				duplicates++;
 				table[index].iterateDupCount();
+				table[index].setProbeCount(table[index].getProbeCount()+tmpProbeCount);
 				sumProbeNum += tmpProbeCount;
 				return;
 			}
@@ -49,17 +51,16 @@ public class HashTable {
 				index = calcSecondaryHash(h.getKey(), count);
 			
 			count++;
+			curElements++;
 		}
 		
 		h.setProbeCount(h.getProbeCount()+tmpProbeCount);
 		sumProbeNum += tmpProbeCount;
 		table[index]=h;
-		
-		
 	}
 	
 	public void printDebug () {
-		System.out.println(String.format("\nUsing %s Hashing....", pm.toString()));
+		System.out.println(String.format("\nUsing %s Hashing....", pm));
 		System.out.println("Input "+numElements+" elements, of which "+duplicates+" duplicates");
 		System.out.println("load factor: "+loadFactor
 				+", Avg. no. of probes: "+(double)sumProbeNum/numElements);
@@ -67,8 +68,7 @@ public class HashTable {
 	}
 	
 	public boolean isFull () {
-		//double currLoadFactor = numElements-duplicates;
-		return numElements-duplicates>=numItems;//currLoadFactor/table.length >=loadFactor;
+		return curElements>=numItems;
 	}
 	
 	public int size () {return table.length;}
