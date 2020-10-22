@@ -42,7 +42,16 @@ public class HashTest {
 		
 		// begin doing stuff
 		int[] twinPrimes = FindTwinPrimes.getArray(95500, 96000);
+		
+		
+		
+		// TODO
 		int numItems = (int) (twinPrimes[1] *loadFactor);
+		
+		
+		
+		
+		
 		System.out.println("A good size table is found: "+twinPrimes[1]);
 		System.out.println("Data source type: "+in);
 		
@@ -61,8 +70,15 @@ public class HashTest {
 			}
 			break;
 		case SYSTEM_TIME:
+			while (!htLinear.isFull()) {
+				HashObject<Long> tmp = new HashObject<>(System.currentTimeMillis());
+				htLinear.insert( tmp );
+				htDouble.insert( tmp );
+			}
+			break;
 		case WORD_LIST:
 			// word list
+			// TODO fix number of elements and duplicates? something wrong here
 			File tmpFile = new File("word-list");
 			try {
 				Scanner fileScanner = new Scanner(tmpFile);
@@ -79,7 +95,6 @@ public class HashTest {
 				return;
 			}
 			break;
-			
 			
 		}
 		

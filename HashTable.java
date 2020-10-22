@@ -13,8 +13,8 @@ public class HashTable {
 	private double loadFactor;
 	
 	private int numElements;
-	private int duplicates;
-	private int sumProbeNum;
+	private long duplicates;
+	private long sumProbeNum;
 	
 	public HashTable (int tableSize, probeMethod pm, boolean dump, double loadFactor) {
 		table = new HashObject[tableSize];
@@ -22,7 +22,7 @@ public class HashTable {
 		this.dump = dump;
 		this.loadFactor = loadFactor;
 		duplicates=0;
-		sumProbeNum=-1;
+		sumProbeNum=0;
 		numElements=0;
 	}
 	
@@ -31,26 +31,27 @@ public class HashTable {
 		int count =0;
 		numElements++;
 		int tmpProbeCount =1;
-		
+		//System.out.println("got here");
 		
 		while (table[index]!=null) {
-			
+			//System.out.println("in loop");
 			tmpProbeCount = count+1;
+			count++;
 			
 			if (h.equals(table[index])) {
 				duplicates++;
 				table[index].iterateDupCount();
+				sumProbeNum += tmpProbeCount;
 				return;
 			}
-			if (pm==probeMethod.LINEAR) {
+			if (pm==probeMethod.LINEAR)
 				index = calcPrimaryHash(h.getKey(), count);
-			}
-			else if (pm==probeMethod.DOUBLE) {
+			else if (pm==probeMethod.DOUBLE)
 				index = calcSecondaryHash(h.getKey(), count);
-			}
-			count++;
+			
 		}
 		
+		//System.out.println(duplicates);
 		h.setProbeCount(h.getProbeCount()+tmpProbeCount);
 		sumProbeNum += tmpProbeCount;
 		table[index]=h;
@@ -73,12 +74,12 @@ public class HashTable {
 	
 	public int size () {return table.length;}
 	
-	private int calcSecondaryHash (int keyHash, int count) {
-		return Math.abs((hashValue(keyHash)+(count*secondaryHashValue(keyHash))) % table.length);
-	}
-	
 	private int calcPrimaryHash (int keyHash, int count) {
 		return (hashValue(keyHash) + count)% table.length;
+	}
+	
+	private int calcSecondaryHash (int keyHash, int count) {
+		return Math.abs((hashValue(keyHash)+(count*secondaryHashValue(keyHash))) % table.length);
 	}
 	
 	private int hashValue (int keyHash) {
