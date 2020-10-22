@@ -1,4 +1,7 @@
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Random;
+import java.util.Scanner;
 
 public class HashTest {
 	public enum inputType {RANDOM, SYSTEM_TIME, WORD_LIST};
@@ -22,7 +25,7 @@ public class HashTest {
 		}
 		
 		// parse arguments
-		inputType in;
+		inputType in = inputType.RANDOM;
 		switch (Integer.parseInt(args[0])) {
 			case 1 :
 				in = inputType.RANDOM;
@@ -40,19 +43,38 @@ public class HashTest {
 		// begin doing stuff
 		int[] twinPrimes = FindTwinPrimes.getArray(95500, 96000);
 		System.out.println("A good size table is found: "+twinPrimes[1]);
-		System.out.println("Data source type: "+"java.util.Random");
+		System.out.println("Data source type: "+in);
 		
 		// load tables
 		HashTable htLinear = new HashTable(twinPrimes[1], HashTable.probeMethod.LINEAR, generateDumpFiles);
 		HashTable htDouble = new HashTable(twinPrimes[1], HashTable.probeMethod.DOUBLE, generateDumpFiles);
 		
-		// random ints
-		int numItems = (int) (htLinear.size() *loadFactor);
-		Random rand = new Random();
-		for (int i=0; i<=numItems; i++) {
-			HashObject<Integer> tmp = new HashObject<Integer>(rand.nextInt());
-			htLinear.insert( tmp );
-			htDouble.insert( tmp );
+		switch (in) {
+		case RANDOM :
+			// random ints
+			int numItems = (int) (htLinear.size() *loadFactor);
+			Random rand = new Random();
+			for (int i=0; i<=numItems; i++) {
+				HashObject<Integer> tmp = new HashObject<Integer>(rand.nextInt());
+				htLinear.insert( tmp );
+				htDouble.insert( tmp );
+			}
+		case SYSTEM_TIME:
+		case WORD_LIST:
+			File tmpFile = new File("word-list");
+			try {
+				Scanner fileScanner = new Scanner(tmpFile);
+				while(fileScanner.hasNext()) {
+					HashObject<String> tmp = new HashObject<String>(fileScanner.next());
+					htLinear.insert(tmp);
+					htDouble.insert(tmp);
+				}
+			} catch (FileNotFoundException e) {
+				System.out.println("cannot read file 'word-list'");
+				return;
+			}
+			
+			
 		}
 		
 		
