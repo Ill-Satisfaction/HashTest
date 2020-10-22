@@ -31,10 +31,8 @@ public class HashTable {
 		int count =0;
 		numElements++;
 		int tmpProbeCount =1;
-		//System.out.println("got here");
 		
 		while (table[index]!=null) {
-			//System.out.println("in loop");
 			tmpProbeCount = count+1;
 			count++;
 			
@@ -48,10 +46,8 @@ public class HashTable {
 				index = calcPrimaryHash(h.getKey(), count);
 			else if (pm==probeMethod.DOUBLE)
 				index = calcSecondaryHash(h.getKey(), count);
-			
 		}
 		
-		//System.out.println(duplicates);
 		h.setProbeCount(h.getProbeCount()+tmpProbeCount);
 		sumProbeNum += tmpProbeCount;
 		table[index]=h;
