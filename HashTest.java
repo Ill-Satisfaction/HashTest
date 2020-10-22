@@ -42,6 +42,7 @@ public class HashTest {
 		
 		// begin doing stuff
 		int[] twinPrimes = FindTwinPrimes.getArray(95500, 96000);
+		int numItems = (int) (twinPrimes[1] *loadFactor);
 		System.out.println("A good size table is found: "+twinPrimes[1]);
 		System.out.println("Data source type: "+in);
 		
@@ -52,7 +53,6 @@ public class HashTest {
 		switch (in) {
 		case RANDOM :
 			// random ints
-			int numItems = (int) (htLinear.size() *loadFactor);
 			Random rand = new Random();
 			for (int i=0; i<=numItems; i++) {
 				HashObject<Integer> tmp = new HashObject<Integer>(rand.nextInt());
@@ -61,16 +61,20 @@ public class HashTest {
 			}
 		case SYSTEM_TIME:
 		case WORD_LIST:
+			// word list
 			File tmpFile = new File("word-list");
 			try {
 				Scanner fileScanner = new Scanner(tmpFile);
-				while(fileScanner.hasNext()) {
-					HashObject<String> tmp = new HashObject<String>(fileScanner.next());
-					htLinear.insert(tmp);
-					htDouble.insert(tmp);
+				for (int i=0; i<=numItems; i++) {
+					if (fileScanner.hasNext()) {
+						HashObject<String> tmp = new HashObject<String>(fileScanner.next());
+						htLinear.insert(tmp);
+						htDouble.insert(tmp);
+					}
 				}
+				fileScanner.close();
 			} catch (FileNotFoundException e) {
-				System.out.println("cannot read file 'word-list'");
+				System.out.println("cannot access file 'word-list'");
 				return;
 			}
 			
