@@ -47,8 +47,8 @@ public class HashTest {
 		System.out.println("Data source type: "+in);
 		
 		// load tables
-		HashTable htLinear = new HashTable(twinPrimes[1], HashTable.probeMethod.LINEAR, generateDumpFiles);
-		HashTable htDouble = new HashTable(twinPrimes[1], HashTable.probeMethod.DOUBLE, generateDumpFiles);
+		HashTable htLinear = new HashTable(twinPrimes[1], HashTable.probeMethod.LINEAR, generateDumpFiles, loadFactor);
+		HashTable htDouble = new HashTable(twinPrimes[1], HashTable.probeMethod.DOUBLE, generateDumpFiles, loadFactor);
 		
 		switch (in) {
 		case RANDOM :
@@ -65,7 +65,7 @@ public class HashTest {
 			File tmpFile = new File("word-list");
 			try {
 				Scanner fileScanner = new Scanner(tmpFile);
-				for (int i=0; i<=numItems; i++) {
+				while (!htLinear.isFull()) {
 					if (fileScanner.hasNext()) {
 						HashObject<String> tmp = new HashObject<String>(fileScanner.next());
 						htLinear.insert(tmp);

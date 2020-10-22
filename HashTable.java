@@ -10,15 +10,17 @@ public class HashTable {
 	private HashObject[] table;
 	private probeMethod pm;
 	private boolean dump;
+	private double loadFactor;
 	
 	private int numElements;
 	private int duplicates;
 	private int sumProbeNum;
 	
-	public HashTable (int tableSize, probeMethod pm, boolean dump) {
+	public HashTable (int tableSize, probeMethod pm, boolean dump, double loadFactor) {
 		table = new HashObject[tableSize];
 		this.pm = pm;
 		this.dump = dump;
+		this.loadFactor = loadFactor;
 		duplicates=0;
 		sumProbeNum=-1;
 		numElements=0;
@@ -27,7 +29,6 @@ public class HashTable {
 	public void insert (HashObject<?> h) {
 		// TODO check number of items
 		int index =hashValue( h.getKey());
-		numElements++;
 		
 		int count =0;
 		while (table[index]!=null) {
@@ -48,16 +49,20 @@ public class HashTable {
 		}
 		sumProbeNum++;
 		h.iterateProbeCount();
+		numElements++;
 		table[index]=h;
-		
 	}
 	
 	public void printDebug () {
 		System.out.println(String.format("\nUsing %s Hashing....", pm.toString()));
 		System.out.println("Input "+numElements+" elements, of which "+duplicates+" duplicates");
-		System.out.println("load factor: "+(double)numElements/table.length
+		System.out.println("load factor: "+loadFactor
 				+", Avg. no. of probes: "+(double)sumProbeNum/numElements);
 		if (dump) dump();
+	}
+	
+	public boolean isFull () {
+		return loadFactor>=numElements/table.length;
 	}
 	
 	public int size () {return table.length;}
