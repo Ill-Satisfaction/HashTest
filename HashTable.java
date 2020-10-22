@@ -29,6 +29,7 @@ public class HashTable {
 	public void insert (HashObject<?> h) {
 		// TODO check number of items
 		int index =hashValue( h.getKey());
+		numElements++;
 		
 		int count =0;
 		while (table[index]!=null) {
@@ -49,7 +50,6 @@ public class HashTable {
 		}
 		sumProbeNum++;
 		h.iterateProbeCount();
-		numElements++;
 		table[index]=h;
 	}
 	
@@ -62,7 +62,7 @@ public class HashTable {
 	}
 	
 	public boolean isFull () {
-		return numElements/table.length>=loadFactor;
+		return (double)((numElements-duplicates)/table.length)>=loadFactor;
 	}
 	
 	public int size () {return table.length;}
