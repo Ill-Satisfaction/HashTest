@@ -43,7 +43,7 @@ public class HashTable {
 				if (index!=table.length-1) index++;
 				else index=0;
 			else {
-				index = (hashValue(h.getKey()) + count*secondaryHashValue(h.getKey())) % table.length;
+				index = Math.abs( (hashValue(h.getKey()) + count*secondaryHashValue(h.getKey())) % table.length);
 			}
 			count++;
 		}
