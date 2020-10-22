@@ -62,7 +62,7 @@ public class HashTable {
 	}
 	
 	public boolean isFull () {
-		return loadFactor>=numElements/table.length;
+		return numElements/table.length>=loadFactor;
 	}
 	
 	public int size () {return table.length;}
