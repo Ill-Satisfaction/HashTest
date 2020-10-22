@@ -23,20 +23,15 @@ public class HashObject<T> {
 	}
 	
 	@Override
-	public String toString() {
+	public String toString () {
 		return this.item.toString();
 	}
 	
-	public void iterateDupCount () {
-		this.dupCount++;
-	}
+	public void iterateDupCount () {this.dupCount++;}
+	public void iterateProbeCount () {this.probeCount++;}
 	
-	public void iterateProbeCount () {
-		this.probeCount++;
-	}
-	
-	public T getItem () {
-		return item;
-	}
+	public T getItem () {return item;}
+	public int getDupCount () {return this.dupCount;}
+	public int getProbeCount () {return this.probeCount;}
 
 }
