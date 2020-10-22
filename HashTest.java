@@ -54,11 +54,12 @@ public class HashTest {
 		case RANDOM :
 			// random ints
 			Random rand = new Random();
-			for (int i=0; i<=numItems; i++) {
+			while (!htLinear.isFull()) {
 				HashObject<Integer> tmp = new HashObject<Integer>(rand.nextInt());
 				htLinear.insert( tmp );
 				htDouble.insert( tmp );
 			}
+			break;
 		case SYSTEM_TIME:
 		case WORD_LIST:
 			// word list
@@ -77,6 +78,7 @@ public class HashTest {
 				System.out.println("cannot access file 'word-list'");
 				return;
 			}
+			break;
 			
 			
 		}
